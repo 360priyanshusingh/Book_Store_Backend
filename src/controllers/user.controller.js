@@ -25,6 +25,24 @@ export const loginUser = async (req, res, next) => {
   }
 };
 
+// export const loginAdmin = async (req, res, next) => {
+//   try {
+//     const data = await UserService.loginAdmin(req.body);
+//     res.status(data.code).json({
+//       code: data.code,
+//       data: data.data,
+//       message: data.message
+//     });
+//   } catch (error) {
+//     // next(error);
+//     res.status(HttpStatus.BAD_REQUEST).json({
+//       code: HttpStatus.BAD_REQUEST,
+//       data: null,
+//       message: error
+//     });
+//   }
+// };
+
 /**
  * Controller to get a single user
  * @param  {object} req - request object
@@ -72,6 +90,23 @@ export const newUser = async (req, res, next) => {
 
   }
 };
+export const newAdmin = async (req, res, next) => {
+  try {
+    const data = await UserService.newAdmin(req.body);
+    res.status(data.code).json({
+      code: data.code,
+      data: data.data,
+      message: data.message
+    });
+  } catch (error) {
+    res.status(HttpStatus.BAD_REQUEST).json({
+      code: HttpStatus.BAD_REQUEST,
+      data: null,
+      message: error
+    });
+
+  }
+};
 
 /**
  * Controller to update a user
@@ -105,4 +140,3 @@ export const resetPassword = async(req,res,next)=>{
  * @param {object} res - response object
  * @param {Function} next
  */
-

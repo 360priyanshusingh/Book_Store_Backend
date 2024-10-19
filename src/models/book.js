@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         primaryKey: true,
       },
-      BookName: {
+      bookName: {
         type: DataTypes.STRING,
         allowNull: false,
       },
@@ -43,14 +43,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: 'Book_Users',
+          model: 'Users',
           key: 'id',
         },
     }
     }, {
         sequelize,
-        modelName: 'User',
-        tableName: 'Book_Users',
+        modelName: 'book',
+        tableName: 'Books',
         }
       );
     

@@ -5,6 +5,7 @@ export const newUserValidator = (req, res, next) => {
     firstName: Joi.string().min(3).required(),
     lastName: Joi.string().min(3).required(),
     email: Joi.string().email().min(3).required(),
+    role:Joi.string(),
     password: Joi.string()
     .min(8)
     .max(15)

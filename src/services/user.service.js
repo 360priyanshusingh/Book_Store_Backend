@@ -54,9 +54,53 @@ export const newUser = async (body) => {
 
 };
 
+export const newAdmin = async (body) => {
+
+  const data = await User.findOne({where:{email:body.email,role:'admin'}});
+  if(data){
+    return{
+      code:HttpStatus.ACCEPTED,
+      data:[],
+      message:"Admin Already present"
+    }
+  }
+  else{
+    const hashedPassword= await bcrypt.hash(body.password,4);
+    body.password=hashedPassword;
+    body.role='admin';
+    const user = await User.create(body)
+
+    const emailOptions = {
+      to: user.email,  
+      subject: 'Welcome to Book Store App !',
+      html: `<h3>Thank you ${user.firstName} ${user.lastName}  for registration with Book Store App. </h3>`,  // HTML version
+    };
+  
+    const emailResult = await sendEmail(emailOptions);
+    
+    if (emailResult.success) {
+      console.log('Welcome email sent to:', user.email);
+    } else {
+      console.error('Failed to send email:', emailResult.error);
+      return {
+        code:HttpStatus.BAD_REQUEST,
+        data:emailResult.error,
+        message:"Registration mail not send to you !"
+      }
+    }
+
+    return{
+      code:HttpStatus.ACCEPTED,
+      data:user,
+      message:'Admin Succesfully created'
+    }
+  }
+
+};
+
 export const loginUser = async (body) => {
 
-  const data = await User.findOne({ where: { email: body.email } });
+  const data = await User.findOne({ where: { email: body.email} });
   if(data===null){
     return {
       code: HttpStatus.ACCEPTED, 
@@ -79,7 +123,7 @@ export const loginUser = async (body) => {
     userId: data.id,
     email:data.email,
     role:data.role
-  }, process.env.JWT_SECRET,{ expiresIn: '1h' });
+  }, process.env.JWT_SECRET_USER,{ expiresIn: '1h' });
 
   return{
     code:HttpStatus.CREATED,
@@ -89,6 +133,42 @@ export const loginUser = async (body) => {
   
 
 };
+
+// export const loginAdmin = async (body) => {
+
+//   const data = await User.findOne({ where: { email: body.email } });
+//   if(data===null){
+//     return {
+//       code: HttpStatus.ACCEPTED, 
+//       data: null,
+//       message: 'Admin is not registered !',
+//     };
+
+//   }
+//    const passwordMatch = await bcrypt.compare(body.password, data.password); 
+
+//    if(!passwordMatch){
+//      return{
+//         code:HttpStatus.ACCEPTED,
+//         data:null,
+//         message:'admin Password Is Wrong !',
+//      };
+//   }
+
+//   const token = jwt.sign({
+//     userId: data.id,
+//     email:data.email,
+//     role:data.role
+//   }, process.env.JWT_SECRET_ADMIN,{ expiresIn: '1h' });
+
+//   return{
+//     code:HttpStatus.CREATED,
+//     data:token,
+//     message:'Admin successfully Login',
+//  };
+  
+
+// };
 
 export const forgetFassword= async(body)=>{
   const data = await User.findOne({where:{email:body.email}})

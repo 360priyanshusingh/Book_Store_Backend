@@ -1,7 +1,8 @@
 'use strict';
+const { type } = require('@hapi/joi/lib/extend');
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class user extends Model {
+  class cart extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -12,40 +13,43 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
  
-     user.init(
+    cart.init(
     {
+
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
       },
-      firstName: {
+
+     userId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Users',
+          key: 'id',
+        },
+    },
+     totalPrice: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      lastName: {
+      totalDiscountPrice: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      email: {
+      totalQuantity: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
-      },
-      password: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      role: {
-        type: DataTypes.ENUM('user', 'admin'),  
-        defaultValue: 'user',                   
-      },
+      }
+     
     }, {
     sequelize,
-    modelName: 'user',
-    tableName: 'Users',
+    modelName: 'cart',
+    tableName: 'Carts',
     }
-  )
-  return user;
+  );
+
+  return cart;
 };
 
