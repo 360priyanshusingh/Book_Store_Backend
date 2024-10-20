@@ -8,9 +8,47 @@ import * as CartService from '../services/cart.service.js';
  * @param {object} res - response object
  * @param {Function} next
  */
-export const createCart = async (req, res) => {
+export const addItem = async (req, res) => {
   try {
-    const data = await CartService.createCart(req.user,req.body);
+    const data = await CartService.addItem(req.body);
+    res.status(data.code).json({
+      code: data.code,
+      data: data.data,
+      message: data.message
+    });
+  } catch (error) {
+     console.log(error)
+    res.status(HttpStatus.BAD_REQUEST).json({
+      code: HttpStatus.BAD_REQUEST,
+      data: null,
+      message: error
+    });
+
+  }
+};
+export const removeItem = async (req, res) => {
+  try {
+    const data = await CartService.removeItem(req.body);
+    res.status(data.code).json({
+      code: data.code,
+      data: data.data,
+      message: data.message
+    });
+  } catch (error) {
+     console.log(error)
+    res.status(HttpStatus.BAD_REQUEST).json({
+      code: HttpStatus.BAD_REQUEST,
+      data: null,
+      message: error
+    });
+
+  }
+};
+
+
+export const deleteCart = async (req, res) => {
+  try {
+    const data = await CartService.deleteCart(req.params.id);
     res.status(data.code).json({
       code: data.code,
       data: data.data,

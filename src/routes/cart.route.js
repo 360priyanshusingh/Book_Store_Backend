@@ -1,12 +1,14 @@
 import express from 'express';
 import * as cartController from '../controllers/cart.controller.js';
-import { userAuth ,adminAuth} from '../middlewares/auth.middleware.js';
+// import { userAuth ,adminAuth} from '../middlewares/auth.middleware.js';
 
 
 const router = express.Router();
 
 
-router.post('/createCart', cartController.createCart);
+router.post('/addItem', cartController.addItem);
+router.post('/removeItem', cartController.removeItem);
+router.delete('/deleteCart/:id', cartController.deleteCart);
 
 
 
