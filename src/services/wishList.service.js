@@ -1,5 +1,5 @@
 import sequelize, { DataTypes } from '../config/database';
-const Cart = require('../models/cart.js')(sequelize, DataTypes);
+const WishList = require('../models/wishList.js')(sequelize, DataTypes);
 const Book = require('../models/book.js')(sequelize, DataTypes);
 import HttpStatus from 'http-status-codes';
 
@@ -9,19 +9,15 @@ import HttpStatus from 'http-status-codes';
 
 
 export const addItem = async (body) => {
-    let cart = await Cart.findOne({ where: { userId: body.userId } });
+    let wishList = await WishList.findOne({ where: { userId: body.userId } });
 
-    if (!cart) {
-        cart = await Cart.create({ userId: body.userId });
+    if (!wishList) {
+        wishList = await WishList.create({ userId: body.userId });
         
         const book = await Book.findOne({ where: { id: body.bookId } });
         if (!book) {
             return { code: HttpStatus.NOT_FOUND, message: 'Book not found' };
         }
-
-        cart.totalQuantity = 1;
-        cart.totalPrice = book.price;
-        cart.totalDiscountPrice=book.discountPrice
 
         const bookData = {
             id: book.id,
@@ -34,15 +30,15 @@ export const addItem = async (body) => {
             discountPrice:book.discountPrice,
         };
 
-        cart.books = cart.books || [];  
-        cart.books = [...cart.books, bookData];
+        wishList.books = wishList.books || [];  
+        wishList.books = [...wishList.books, bookData];
 
        
-        await cart.save();
+        await wishList.save();
 
     } else {
         // Check if the book already exists in the cart
-        let existingBook = cart?.books?.find((book) => {
+        let existingBook = wishList.books.find((book) => {
             if(book.id == body.bookId){
                 return book
             }
@@ -51,7 +47,7 @@ export const addItem = async (body) => {
 
         if (existingBook) {
             // If the book already exists, increment its quantity
-            const updatedBooks = cart.books.map((book) => {
+            const updatedBooks = wishList.books.map((book) => {
                 if (book.id == body.bookId) {
                     return {
                         ...book,
@@ -61,16 +57,12 @@ export const addItem = async (body) => {
                 return book;
             });
           
-            cart.setDataValue('books', updatedBooks); 
+            wishList.setDataValue('books', updatedBooks); 
      
-            cart.books=[...updatedBooks]
-        
-            cart.totalPrice += parseFloat(existingBook.price);
-            cart.totalDiscountPrice+=parseFloat(existingBook.discountPrice);
-            cart.totalQuantity += 1;
+            wishList.books=[...updatedBooks]
 
-            console.log("Updated cart books",cart.books)
-            await cart.save();
+            console.log("Updated cart books",wishList.books)
+            await wishList.save();
         } else {
             
             const book = await Book.findOne({ where: { id: body.bookId } });
@@ -87,29 +79,26 @@ export const addItem = async (body) => {
                 quantity: 1,
                 adminId: book.adminId,
                 description: book.description,
-                discountPrice:book.discountPrice,
                 price: book.price,
             };
 
-            cart.books = [...cart.books, newBookData];
-            cart.totalPrice += parseFloat(newBookData.price);
-            cart.totalDiscountPrice+=parseFloat(newBookData.discountPrice);
-            cart.totalQuantity += 1;
-            await cart.save();
+            wishList.books = [...wishList.books, newBookData];
+         
+            await wishList.save();
         }
     }
 
     return {
         code: HttpStatus.ACCEPTED,
-        data: cart,
-        message: 'Cart successfully updated',
+        data: wishList,
+        message: 'WishList successfully updated',
     };
 };
 
 export const removeItem = async (body) => {
-    let cart = await Cart.findOne({ where: { userId: body.userId } });
+    let wishList = await WishList.findOne({ where: { userId: body.userId } });
 
-    if (!cart) {
+    if (!wishList) {
         return {
             code: HttpStatus.BAD_REQUEST,
             data: [],
@@ -117,8 +106,8 @@ export const removeItem = async (body) => {
         };
 
     } else {
-        // Check if the book already exists in the cart
-        let existingBook = cart.books.find((book) => {
+       
+        let existingBook = wishList.books.find((book) => {
             if(book.id == body.bookId){
                 return book
             }
@@ -127,7 +116,7 @@ export const removeItem = async (body) => {
 
         if (existingBook) {
           
-            let updatedBooks = cart.books
+            let updatedBooks = wishList.books
              .map((book) => {
               if (book.id == body.bookId) {
                 return {
@@ -146,52 +135,47 @@ export const removeItem = async (body) => {
             })
 
 
-            cart.setDataValue('books', updatedBooks); 
+            wishList.setDataValue('books', updatedBooks); 
      
-            cart.books=[...updatedBooks]
-        
-            cart.totalPrice -= parseFloat(existingBook.price)
-            cart.totalDiscountPrice-=parseFloat(existingBook.discountPrice);
-            cart.totalQuantity -= 1;
+            wishList.books=[...updatedBooks]
 
-            console.log("Updated cart books",cart.books)
-            await cart.save();
+            console.log("Updated cart books",wishList.books)
+            await wishList.save();
         } else {
             
             return {
                 code: HttpStatus.BAD_REQUEST,
                 data: [],
-                message: 'Cart book not Exit !',
+                message: 'wishList book not Exit !',
             };
         }
     }
 
     return {
         code: HttpStatus.ACCEPTED,
-        data: cart,
-        message: 'Book Successfully Remove !',
+        data: wishList,
+        message: 'wishList Successfully Remove !',
     };
 };
 
 
 
 
-export const deleteCart = async (userId) => {
- let cart = await Cart.findOne({ where: { userId:userId } });    
-  if(!cart){
+export const deleteWishList = async (userId) => {
+ let wishList = await WishList.findOne({ where: { userId:userId } });    
+  if(!wishList){
     return {
         code: HttpStatus.ACCEPTED,
         data: [],
-        message: 'Cart not exit',
+        message: 'WishList not exit',
       };
-
   }
   else{
-    cart = await Cart.destroy({ where: { userId:userId } })
+    wishList = await WishList.destroy({ where: { userId:userId } })
     return {
         code: HttpStatus.ACCEPTED,
-        data: cart,
-        message: 'Cart successfully deleted',
+        data: wishList,
+        message: 'WishList successfully deleted',
       };
   } 
   };
