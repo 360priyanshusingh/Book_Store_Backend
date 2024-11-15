@@ -4,61 +4,53 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.userAuth = void 0;
+exports.verifyRole = void 0;
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 var _httpStatusCodes = _interopRequireDefault(require("http-status-codes"));
-var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
 var _dotenv = _interopRequireDefault(require("dotenv"));
 _dotenv["default"].config();
 
 /**
- * Middleware to authenticate if user has a valid Authorization token
- * Authorization: Bearer <token>
- *
+ * Middleware to authenticate if user has a valid role.
+ * 
  * @param {Object} req
  * @param {Object} res
  * @param {Function} next
  */
-var userAuth = exports.userAuth = /*#__PURE__*/function () {
+var verifyRole = exports.verifyRole = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2["default"])(/*#__PURE__*/_regenerator["default"].mark(function _callee(req, res, next) {
-    var bearerToken, user;
     return _regenerator["default"].wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
-          _context.prev = 0;
-          bearerToken = req.header('Authorization');
-          if (bearerToken) {
-            _context.next = 4;
+          console.log("verify role: ", req.body);
+          _context.prev = 1;
+          if (!(req.body.role === 'admin')) {
+            _context.next = 6;
             break;
           }
+          next();
+          _context.next = 7;
+          break;
+        case 6:
           throw {
             code: _httpStatusCodes["default"].BAD_REQUEST,
-            message: 'Authorization token is required'
+            message: 'Unauthorized Role!'
           };
-        case 4:
-          bearerToken = bearerToken.split(' ')[1];
-          _context.next = 7;
-          return _jsonwebtoken["default"].verify(bearerToken, process.env.JWT_SECRET_USER);
         case 7:
-          user = _context.sent;
-          console.log(user);
-          req.body.userId = user.userId;
-          req.body.role = user.role;
-          next();
-          _context.next = 17;
+          _context.next = 12;
           break;
-        case 14:
-          _context.prev = 14;
-          _context.t0 = _context["catch"](0);
+        case 9:
+          _context.prev = 9;
+          _context.t0 = _context["catch"](1);
           next(_context.t0);
-        case 17:
+        case 12:
         case "end":
           return _context.stop();
       }
-    }, _callee, null, [[0, 14]]);
+    }, _callee, null, [[1, 9]]);
   }));
-  return function userAuth(_x, _x2, _x3) {
+  return function verifyRole(_x, _x2, _x3) {
     return _ref.apply(this, arguments);
   };
 }();

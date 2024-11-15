@@ -37,8 +37,10 @@ export const updateBook = async (bookId,body) => {
     
     book.description=body.description;
     book.price=body.price;
-    book.qty=body.qty;
+    book.quantity=body.quantity;
     book.author=body.author;
+    book.imgUrl=body.imgUrl;
+    book.discountPrice=body.discountPrice;
     book.bookName=body.bookName?body.bookName: book.bookName;
     book.save()
      

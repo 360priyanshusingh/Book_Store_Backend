@@ -11,56 +11,54 @@ function _isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.
 var _require = require('sequelize'),
   Model = _require.Model;
 module.exports = function (sequelize, DataTypes) {
-  var user = /*#__PURE__*/function (_Model) {
-    function user() {
-      (0, _classCallCheck2["default"])(this, user);
-      return _callSuper(this, user, arguments);
+  var cart = /*#__PURE__*/function (_Model) {
+    function cart() {
+      (0, _classCallCheck2["default"])(this, cart);
+      return _callSuper(this, cart, arguments);
     }
-    (0, _inherits2["default"])(user, _Model);
-    return (0, _createClass2["default"])(user, null, [{
+    (0, _inherits2["default"])(cart, _Model);
+    return (0, _createClass2["default"])(cart, null, [{
       key: "associate",
-      value:
-      /**
-       * Helper method for defining associations.
-       * This method is not a part of Sequelize lifecycle.
-       * The `models/index` file will call this method automatically.
-       */
-      function associate(models) {
-        // define association here
+      value: function associate(models) {
+        // Define associations here
       }
     }]);
   }(Model);
-  user.init({
+  cart.init({
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true
     },
-    firstName: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    lastName: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    email: {
-      type: DataTypes.STRING,
+    userId: {
+      type: DataTypes.INTEGER,
       allowNull: false,
-      unique: true
+      references: {
+        model: 'Users',
+        key: 'id'
+      }
     },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false
+    totalPrice: {
+      type: DataTypes.INTEGER,
+      allowNull: true
     },
-    role: {
-      type: DataTypes.ENUM('user', 'admin'),
-      defaultValue: 'user'
+    totalDiscountPrice: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    totalQuantity: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    books: {
+      type: DataTypes.JSONB,
+      allowNull: true,
+      defaultValue: []
     }
   }, {
     sequelize: sequelize,
-    modelName: 'user',
-    tableName: 'Users'
+    modelName: 'cart',
+    tableName: 'Carts'
   });
-  return user;
+  return cart;
 };

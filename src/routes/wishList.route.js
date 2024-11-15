@@ -7,10 +7,11 @@ import { userAuth } from '../middlewares/auth.middleware.js';
 const router = express.Router();
 
 
-router.post('/addItem', userAuth,wishListController.addItem);
-router.post('/removeItem',userAuth,wishListController.removeItem);
+router.post('/addItem/:id', userAuth,wishListController.addItem);
+router.post('/removeItem/:id',userAuth,wishListController.removeItem);
 router.delete('/deleteWishList/:id', userAuth,wishListController.deleteWishList);
-
+router.get('/getWishList', userAuth,wishListController.getWishList);
+router.delete('/deleteItem/:id', userAuth,wishListController.deleteItem);
 
 
 

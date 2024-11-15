@@ -11,13 +11,13 @@ function _isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.
 var _require = require('sequelize'),
   Model = _require.Model;
 module.exports = function (sequelize, DataTypes) {
-  var user = /*#__PURE__*/function (_Model) {
-    function user() {
-      (0, _classCallCheck2["default"])(this, user);
-      return _callSuper(this, user, arguments);
+  var book = /*#__PURE__*/function (_Model) {
+    function book() {
+      (0, _classCallCheck2["default"])(this, book);
+      return _callSuper(this, book, arguments);
     }
-    (0, _inherits2["default"])(user, _Model);
-    return (0, _createClass2["default"])(user, null, [{
+    (0, _inherits2["default"])(book, _Model);
+    return (0, _createClass2["default"])(book, null, [{
       key: "associate",
       value:
       /**
@@ -30,37 +30,52 @@ module.exports = function (sequelize, DataTypes) {
       }
     }]);
   }(Model);
-  user.init({
+  book.init({
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true
     },
-    firstName: {
+    bookName: {
       type: DataTypes.STRING,
       allowNull: false
     },
-    lastName: {
+    author: {
       type: DataTypes.STRING,
       allowNull: false
     },
-    email: {
+    imgUrl: {
       type: DataTypes.STRING,
+      allowNull: false
+    },
+    quantity: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    price: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    description: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    discountPrice: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    adminId: {
+      type: DataTypes.INTEGER,
       allowNull: false,
-      unique: true
-    },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    role: {
-      type: DataTypes.ENUM('user', 'admin'),
-      defaultValue: 'user'
+      references: {
+        model: 'Users',
+        key: 'id'
+      }
     }
   }, {
     sequelize: sequelize,
-    modelName: 'user',
-    tableName: 'Users'
+    modelName: 'book',
+    tableName: 'Books'
   });
-  return user;
+  return book;
 };

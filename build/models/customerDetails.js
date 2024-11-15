@@ -11,56 +11,57 @@ function _isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.
 var _require = require('sequelize'),
   Model = _require.Model;
 module.exports = function (sequelize, DataTypes) {
-  var user = /*#__PURE__*/function (_Model) {
-    function user() {
-      (0, _classCallCheck2["default"])(this, user);
-      return _callSuper(this, user, arguments);
+  var customerDetails = /*#__PURE__*/function (_Model) {
+    function customerDetails() {
+      (0, _classCallCheck2["default"])(this, customerDetails);
+      return _callSuper(this, customerDetails, arguments);
     }
-    (0, _inherits2["default"])(user, _Model);
-    return (0, _createClass2["default"])(user, null, [{
+    (0, _inherits2["default"])(customerDetails, _Model);
+    return (0, _createClass2["default"])(customerDetails, null, [{
       key: "associate",
-      value:
-      /**
-       * Helper method for defining associations.
-       * This method is not a part of Sequelize lifecycle.
-       * The `models/index` file will call this method automatically.
-       */
-      function associate(models) {
-        // define association here
+      value: function associate(models) {
+        // Define associations here
       }
     }]);
   }(Model);
-  user.init({
+  customerDetails.init({
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true
     },
-    firstName: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    lastName: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    email: {
-      type: DataTypes.STRING,
+    userId: {
+      type: DataTypes.INTEGER,
       allowNull: false,
-      unique: true
+      references: {
+        model: 'Users',
+        key: 'id'
+      }
     },
-    password: {
+    name: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
-    role: {
-      type: DataTypes.ENUM('user', 'admin'),
-      defaultValue: 'user'
+    mobileNumber: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    address: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    state: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    city: {
+      type: DataTypes.STRING,
+      allowNull: true
     }
   }, {
     sequelize: sequelize,
-    modelName: 'user',
-    tableName: 'Users'
+    modelName: 'customerDetails',
+    tableName: 'CustomerDetails'
   });
-  return user;
+  return customerDetails;
 };

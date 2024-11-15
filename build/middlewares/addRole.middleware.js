@@ -4,7 +4,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.userAuth = void 0;
+exports.addRole = void 0;
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 var _httpStatusCodes = _interopRequireDefault(require("http-status-codes"));
@@ -20,45 +20,28 @@ _dotenv["default"].config();
  * @param {Object} res
  * @param {Function} next
  */
-var userAuth = exports.userAuth = /*#__PURE__*/function () {
+var addRole = exports.addRole = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2["default"])(/*#__PURE__*/_regenerator["default"].mark(function _callee(req, res, next) {
-    var bearerToken, user;
     return _regenerator["default"].wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
-          _context.prev = 0;
-          bearerToken = req.header('Authorization');
-          if (bearerToken) {
-            _context.next = 4;
-            break;
+          try {
+            if (req.path === "/signup") {
+              req.body.role = 'user';
+            } else {
+              req.body.role = 'admin';
+            }
+            next();
+          } catch (error) {
+            next(error);
           }
-          throw {
-            code: _httpStatusCodes["default"].BAD_REQUEST,
-            message: 'Authorization token is required'
-          };
-        case 4:
-          bearerToken = bearerToken.split(' ')[1];
-          _context.next = 7;
-          return _jsonwebtoken["default"].verify(bearerToken, process.env.JWT_SECRET_USER);
-        case 7:
-          user = _context.sent;
-          console.log(user);
-          req.body.userId = user.userId;
-          req.body.role = user.role;
-          next();
-          _context.next = 17;
-          break;
-        case 14:
-          _context.prev = 14;
-          _context.t0 = _context["catch"](0);
-          next(_context.t0);
-        case 17:
+        case 1:
         case "end":
           return _context.stop();
       }
-    }, _callee, null, [[0, 14]]);
+    }, _callee);
   }));
-  return function userAuth(_x, _x2, _x3) {
+  return function addRole(_x, _x2, _x3) {
     return _ref.apply(this, arguments);
   };
 }();

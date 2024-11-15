@@ -123,12 +123,56 @@ export const loginUser = async (body) => {
     userId: data.id,
     email:data.email,
     role:data.role
-  }, process.env.JWT_SECRET_USER,{ expiresIn: '1h' });
+  }, process.env.JWT_SECRET_USER);
 
   return{
     code:HttpStatus.CREATED,
     data:token,
     message:'User successfully Login',
+ };
+  
+
+};
+export const getUser = async (body) => {
+
+  const data = await User.findOne({ where: { id : body.userId} });
+  if(data===null){
+    return {
+      code: HttpStatus.ACCEPTED, 
+      data: null,
+      message: 'User is not registered !',
+    };
+  }
+  return{
+    code:HttpStatus.CREATED,
+    data:data,
+    message:'User successfully Get !',
+ };
+  
+
+};
+
+export const updateUser = async (body) => {
+
+  const data = await User.findOne({ where: { id : body.userId} });
+
+  if(data===null){
+    return {
+      code: HttpStatus.ACCEPTED, 
+      data: null,
+      message: 'User is not registered !',
+    };
+  }
+
+   data.firstName=body.firstName?body.firstName:data.firstName
+   data.lastName=body.lastName?body.lastName:data.lastName
+   data.email=body.email?body.email:data.email
+   data.save()
+
+  return{
+    code:HttpStatus.CREATED,
+    data:data,
+    message:'User successfully Update!',
  };
   
 

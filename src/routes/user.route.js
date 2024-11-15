@@ -13,7 +13,9 @@ router.post('/signupAdmin',newUserValidator,addRole,userController.newAdmin);
 
 router.post('/login',loginUserValidator, userController.loginUser);
 
-// router.post('/loginAdmin',loginUserValidator, userController.loginAdmin);
+router.put('/updateUser',userAuth, userController.updateUser);
+
+router.get('/getUser',userAuth,userController.getUser);
 
 router.post('/forgetPassword',userController.forgetFassword);
 

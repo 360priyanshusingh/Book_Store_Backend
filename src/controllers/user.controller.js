@@ -25,23 +25,23 @@ export const loginUser = async (req, res, next) => {
   }
 };
 
-// export const loginAdmin = async (req, res, next) => {
-//   try {
-//     const data = await UserService.loginAdmin(req.body);
-//     res.status(data.code).json({
-//       code: data.code,
-//       data: data.data,
-//       message: data.message
-//     });
-//   } catch (error) {
-//     // next(error);
-//     res.status(HttpStatus.BAD_REQUEST).json({
-//       code: HttpStatus.BAD_REQUEST,
-//       data: null,
-//       message: error
-//     });
-//   }
-// };
+export const getUser = async (req, res, next) => {
+  try {
+    const data = await UserService.getUser(req.body);
+    res.status(data.code).json({
+      code: data.code,
+      data: data.data,
+      message: data.message
+    });
+  } catch (error) {
+    // next(error);
+    res.status(HttpStatus.BAD_REQUEST).json({
+      code: HttpStatus.BAD_REQUEST,
+      data: null,
+      message: error
+    });
+  }
+};
 
 /**
  * Controller to get a single user
@@ -90,6 +90,25 @@ export const newUser = async (req, res, next) => {
 
   }
 };
+
+export const updateUser = async (req, res, next) => {
+  try {
+    const data = await UserService.updateUser(req.body);
+    res.status(data.code).json({
+      code: data.code,
+      data: data.data,
+      message: data.message
+    });
+  } catch (error) {
+    res.status(HttpStatus.BAD_REQUEST).json({
+      code: HttpStatus.BAD_REQUEST,
+      data: null,
+      message: error
+    });
+
+  }
+};
+
 export const newAdmin = async (req, res, next) => {
   try {
     const data = await UserService.newAdmin(req.body);

@@ -11,56 +11,58 @@ function _isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.
 var _require = require('sequelize'),
   Model = _require.Model;
 module.exports = function (sequelize, DataTypes) {
-  var user = /*#__PURE__*/function (_Model) {
-    function user() {
-      (0, _classCallCheck2["default"])(this, user);
-      return _callSuper(this, user, arguments);
+  var order = /*#__PURE__*/function (_Model) {
+    function order() {
+      (0, _classCallCheck2["default"])(this, order);
+      return _callSuper(this, order, arguments);
     }
-    (0, _inherits2["default"])(user, _Model);
-    return (0, _createClass2["default"])(user, null, [{
+    (0, _inherits2["default"])(order, _Model);
+    return (0, _createClass2["default"])(order, null, [{
       key: "associate",
-      value:
-      /**
-       * Helper method for defining associations.
-       * This method is not a part of Sequelize lifecycle.
-       * The `models/index` file will call this method automatically.
-       */
-      function associate(models) {
-        // define association here
+      value: function associate(models) {
+        // Define associations here
       }
     }]);
   }(Model);
-  user.init({
+  order.init({
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true
     },
-    firstName: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    lastName: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    email: {
-      type: DataTypes.STRING,
+    userId: {
+      type: DataTypes.INTEGER,
       allowNull: false,
-      unique: true
+      references: {
+        model: 'Users',
+        key: 'id'
+      }
     },
-    password: {
-      type: DataTypes.STRING,
+    totalPrice: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    totalDiscountPrice: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    totalQuantity: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    books: {
+      type: DataTypes.JSONB,
+      allowNull: true,
+      defaultValue: []
+    },
+    shippingAddress: {
+      type: DataTypes.JSONB,
       allowNull: false
-    },
-    role: {
-      type: DataTypes.ENUM('user', 'admin'),
-      defaultValue: 'user'
     }
   }, {
     sequelize: sequelize,
-    modelName: 'user',
-    tableName: 'Users'
+    modelName: 'order',
+    tableName: 'Orders'
   });
-  return user;
+  return order;
 };
