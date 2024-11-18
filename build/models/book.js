@@ -19,13 +19,7 @@ module.exports = function (sequelize, DataTypes) {
     (0, _inherits2["default"])(book, _Model);
     return (0, _createClass2["default"])(book, null, [{
       key: "associate",
-      value:
-      /**
-       * Helper method for defining associations.
-       * This method is not a part of Sequelize lifecycle.
-       * The `models/index` file will call this method automatically.
-       */
-      function associate(models) {
+      value: function associate(models) {
         // define association here
       }
     }]);

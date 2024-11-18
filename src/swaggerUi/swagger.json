@@ -1,0 +1,780 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "BookStore Project Management API",
+      "version": "1.0.0",
+      "description": "API documentation for managing users , books , cart , wishList , order  and cutomerDetails"
+    },
+    "servers": [
+      {
+        "url": "http://localhost:4000/api/v1",
+        "description": "Local development server"
+      }
+    ],
+    "paths": {
+      "/users/signupAdmin": {
+        "post": {
+          "summary": "Sign up a new admin user",
+          "tags": ["Admin"],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "202": {
+              "description": "User created or already exists",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/UserResponse"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Failed to send registration email",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/users/signup": {
+        "post": {
+          "summary": "Sign up a new user",
+          "tags": ["User"],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "202": {
+              "description": "User created or already exists",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/UserResponse"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Failed to send registration email",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/users/login": {
+        "post": {
+          "summary": "User login",
+          "tags": ["User"],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "User successfully logged in",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/LoginResponse"
+                  }
+                }
+              }
+            },
+            "202": {
+              "description": "User not registered or password is incorrect",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/users/getUser": {
+        "get": {
+          "summary": "Get the current user from the Bearer token",
+          "tags": ["User"],
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "User successfully retrieved",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/UserResponse"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Authorization token is required or invalid",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "User not registered",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+     "/users/updateUser": {
+          "put": {
+            "summary": "Update user details",
+            "tags": ["User"],
+            "security": [
+              {
+                "bearerAuth": []
+              }
+            ],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/UserUpdateRequest"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "User successfully updated",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/UserResponse"
+                    }
+                  }
+                }
+              },
+              "401": {
+                "description": "Authorization token is invalid or expired",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "User not registered",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  }
+                }
+              }
+            }
+          }
+     },
+     "/users/forgetPassword": {
+        "post": {
+          "summary": "Generate OTP for password reset",
+          "tags": ["User"],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ForgetPasswordRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "OTP generated and sent to the user's email",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ForgetPasswordResponse"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "User not registered",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorUserNotRegResponse"
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Failed to send email",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/users/resetPassword/{email}": {
+        "post": {
+          "summary": "Reset the user's password using OTP",
+          "tags": ["User"],
+          "parameters": [
+            {
+              "name": "email",
+              "in": "path",
+              "required": true,
+              "description": "The email address of the user for password reset",
+              "schema": {
+                "type": "string",
+                "example": "johndoe@example.com"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResetPasswordRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Password reset successful",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ResetPasswordResponse"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "User not registered or OTP incorrect",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResetResponse"
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Internal server error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+    },
+    "/books/createBook": {
+      "post": {
+        "summary": "Create a new book",
+        "tags": ["Books"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Book created or already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Book not created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/books/getAllBook": {
+      "get": {
+        "summary": "Get the all books from the Bearer token",
+        "tags": ["Books"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "book successfully retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authorization token is required or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Book not registered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    },
+    "components": {
+      "securitySchemes": {
+        "bearerAuth": {
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT"
+        }
+      },
+      "schemas": {
+         "ResetPasswordRequest": {
+            "type": "object",
+            "properties": {
+              "otp": {
+                "type": "string",
+                "example": "12345"
+              },
+              "newPassword": {
+                "type": "string",
+                "format": "password",
+                "example": "newSecurePassword123"
+              }
+            },
+            "required": ["otp", "newPassword"]
+          },
+          "ResetPasswordResponse": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "integer",
+                "example": 202
+              },
+              "data": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "firstName": {
+                    "type": "string",
+                    "example": "John"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "example": "Doe"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "johndoe@example.com"
+                  }
+                }
+              },
+              "message": {
+                "type": "string",
+                "example": "Your password has been successfully reset!"
+              }
+            }
+          },
+          "ErrorResetResponse": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "integer",
+                "example": 400
+              },
+              "data": {
+                "type": "string",
+                "nullable": true,
+                "example": "Error details"
+              },
+              "message": {
+                "type": "string",
+                "example": "User not registered or OTP is incorrect!"
+              }
+            }
+          },
+        "ForgetPasswordRequest": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "format": "email",
+                "example": "johndoe@example.com"
+              }
+            },
+            "required": ["email"]
+          },
+          "ForgetPasswordResponse": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "integer",
+                "example": 202
+              },
+              "data": {
+                "type": "null"
+              },
+              "message": {
+                "type": "string",
+                "example": "Otp Generated Please check your mail!"
+              }
+            }
+          },
+          "ErrorUserNotRegResponse": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "integer",
+                "example": 400
+              },
+              "data": {
+                "type": "string",
+                "nullable": true,
+                "example": "Error details"
+              },
+              "message": {
+                "type": "string",
+                "example": "User not registered!"
+              }
+            }
+          },
+        "UserRequest": {
+          "type": "object",
+          "properties": {
+            "firstName": {
+              "type": "string",
+              "example": "John"
+            },
+            "lastName": {
+              "type": "string",
+              "example": "Doe"
+            },
+            "email": {
+              "type": "string",
+              "format": "email",
+              "example": "johndoe@example.com"
+            },
+            "password": {
+              "type": "string",
+              "format": "password",
+              "example": "securepassword"
+            }
+          },
+          "required": ["firstName", "lastName", "email", "password"]
+        },
+       "BookRequest": {
+  "type": "object",
+  "properties": {
+    "bookName": {
+      "type": "string",
+      "description": "Name of the book.",
+      "example": "To Kill a Mockingbird"
+    },
+    "author": {
+      "type": "string",
+      "description": "Author of the book.",
+      "example": "Harper Lee"
+    },
+    "imgUrl": {
+      "type": "string",
+      "description": "URL of the book cover image.",
+      "example": "http://example.com/image.jpg"
+    },
+    "quantity": {
+      "type": "integer",
+      "description": "Quantity of the book in stock.",
+      "example": 10
+    },
+    "price": {
+      "type": "integer",
+      "description": "Price of the book.",
+      "example": 1500
+    },
+    "description": {
+      "type": "string",
+      "description": "Short description of the book.",
+      "example": "A classic novel of racism and injustice."
+    },
+    "discountPrice": {
+      "type": "integer",
+      "description": "Discounted price of the book.",
+      "example": 1200
+    },
+    "adminId":{
+      "type":"integer",
+       "description":"Created by Admin",
+       "example":"4"
+    }
+  },
+  "required": ["bookName", "author", "imgUrl", "quantity", "price", "description", "discountPrice"]
+        },
+        "BookResponse": {
+  "type": "object",
+  "properties": {
+    "code": {
+      "type": "integer",
+      "example": 202
+    },
+    "data": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "example": 101
+        },
+        "bookName": {
+          "type": "string",
+          "example": "To Kill a Mockingbird"
+        },
+        "author": {
+          "type": "string",
+          "example": "Harper Lee"
+        },
+        "imgUrl": {
+          "type": "string",
+          "example": "http://example.com/image.jpg"
+        },
+        "quantity": {
+          "type": "integer",
+          "example": 10
+        },
+        "price": {
+          "type": "integer",
+          "example": 1500
+        },
+        "description": {
+          "type": "string",
+          "example": "A classic novel of racism and injustice."
+        },
+        "discountPrice": {
+          "type": "integer",
+          "example": 1200
+        },
+        "adminId": {
+          "type": "integer",
+          "example": 1
+        }
+      }
+    },
+    "message": {
+      "type": "string",
+      "example": "Book successfully created"
+    }
+  }
+         },
+        "UserUpdateRequest": {
+          "type": "object",
+          "properties": {
+            "firstName": {
+              "type": "string",
+              "example": "John"
+            },
+            "lastName": {
+              "type": "string",
+              "example": "Doe"
+            },
+            "email": {
+              "type": "string",
+              "format": "email",
+              "example": "johndoe@example.com"
+            }
+          },
+          "required": ["firstName", "lastName", "email"]
+        },
+        "UserResponse": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "integer",
+              "example": 202
+            },
+            "data": {
+              "type": "object",
+              "nullable": true,
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "example": 1
+                },
+                "firstName": {
+                  "type": "string",
+                  "example": "John"
+                },
+                "lastName": {
+                  "type": "string",
+                  "example": "Doe"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "johndoe@example.com"
+                },
+                "role": {
+                  "type": "string",
+                  "enum": ["user", "admin"],
+                  "example": "user"
+                }
+              }
+            },
+            "message": {
+              "type": "string",
+              "example": "User Successfully created"
+            }
+          }
+        },
+        "LoginRequest": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string",
+              "format": "email",
+              "example": "johndoe@example.com"
+            },
+            "password": {
+              "type": "string",
+              "format": "password",
+              "example": "securepassword"
+            }
+          },
+          "required": ["email", "password"]
+        },
+        "LoginResponse": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "integer",
+              "example": 201
+            },
+            "data": {
+              "type": "string",
+              "format": "jwt",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+            },
+            "message": {
+              "type": "string",
+              "example": "User successfully Login"
+            }
+          }
+        },
+        "ErrorResponse": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "integer",
+              "example": 400
+            },
+            "data": {
+              "type": "string",
+              "nullable": true,
+              "example": "Error details"
+            },
+            "message": {
+              "type": "string",
+              "example": "Registration mail not sent to you!"
+            }
+          }
+        }
+    }
+  }
+}
+
+  

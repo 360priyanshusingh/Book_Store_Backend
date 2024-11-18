@@ -32,6 +32,8 @@
     "nodemailer": "^6.9.15",
     "pg": "^8.13.0",
     "sequelize": "^6.3.5",
+    "start": "^5.1.0",
+    "swagger-ui-express": "^5.0.1",
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.0"
   },
