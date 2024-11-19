@@ -322,16 +322,18 @@ var deleteItem = exports.deleteItem = /*#__PURE__*/function () {
     return _regenerator["default"].wrap(function _callee5$(_context5) {
       while (1) switch (_context5.prev = _context5.next) {
         case 0:
-          _context5.next = 2;
+          console.log(body);
+          _context5.next = 3;
           return WishList.findOne({
             where: {
               userId: body.userId
             }
           });
-        case 2:
+        case 3:
           wishList = _context5.sent;
+          console.log(wishList);
           if (wishList) {
-            _context5.next = 7;
+            _context5.next = 9;
             break;
           }
           return _context5.abrupt("return", {
@@ -339,7 +341,7 @@ var deleteItem = exports.deleteItem = /*#__PURE__*/function () {
             data: [],
             message: 'WishList not Exit !'
           });
-        case 7:
+        case 9:
           // Check if the book already exists in the cart
           existingBook = wishList.books.find(function (book) {
             if (book.id == bookId) {
@@ -348,7 +350,7 @@ var deleteItem = exports.deleteItem = /*#__PURE__*/function () {
           });
           console.log(existingBook);
           if (!existingBook) {
-            _context5.next = 18;
+            _context5.next = 20;
             break;
           }
           updatedBooks = wishList.books.filter(function (book) {
@@ -359,24 +361,24 @@ var deleteItem = exports.deleteItem = /*#__PURE__*/function () {
           wishList.setDataValue('books', updatedBooks);
           wishList.books = (0, _toConsumableArray2["default"])(updatedBooks);
           console.log("Updated wishList books", wishList.books);
-          _context5.next = 16;
+          _context5.next = 18;
           return wishList.save();
-        case 16:
-          _context5.next = 19;
-          break;
         case 18:
+          _context5.next = 21;
+          break;
+        case 20:
           return _context5.abrupt("return", {
             code: _httpStatusCodes["default"].BAD_REQUEST,
             data: [],
             message: 'WishList book not Exit !'
           });
-        case 19:
+        case 21:
           return _context5.abrupt("return", {
             code: _httpStatusCodes["default"].ACCEPTED,
             data: wishList,
             message: 'Book Successfully delete !'
           });
-        case 20:
+        case 22:
         case "end":
           return _context5.stop();
       }

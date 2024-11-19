@@ -198,9 +198,10 @@ export const getWishList = async (userId) => {
   
 
   export const deleteItem = async (body,bookId) => {
-    
-    let wishList = await WishList.findOne({ where: { userId: body.userId } });
+    console.log(body)
 
+    let wishList = await WishList.findOne({ where: { userId: body.userId } });
+    console.log(wishList) 
     if (!wishList) {
         return {
             code: HttpStatus.BAD_REQUEST,

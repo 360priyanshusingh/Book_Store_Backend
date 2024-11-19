@@ -373,13 +373,113 @@
         }
       }
     },
-    "/books/getAllBook": {
-      "get": {
-        "summary": "Get the all books from the Bearer token",
+    "/books/updateBook/{id}": {
+      "put": {
+        "summary": "Update a book",
         "tags": ["Books"],
         "security": [
           {
             "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the Book",
+            "schema": {
+              "type": "string",
+              "example": "1"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Book created or already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Book not created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/books/getAllBook": {
+      "get": {
+        "summary": "Get the all books from the Bearer token",
+        "tags": ["Books"],
+        "responses": {
+          "202": {
+            "description": "book successfully retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AllBookResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authorization token is required or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Book not registered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/books/getAllBookById/{id}": {
+      "get": {
+        "summary": "Get the books By Id from the Bearer token",
+        "tags": ["Books"],
+             "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the Book",
+            "schema": {
+              "type": "string",
+              "example": "1"
+            }
           }
         ],
         "responses": {
@@ -415,7 +515,258 @@
           }
         }
       }
-    }
+    },
+    "/books/deleteBook/{id}": {
+      "delete": {
+        "summary": "Delete a Book",
+        "tags": ["Books"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+      "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the Book",
+            "schema": {
+              "type": "string",
+              "example": "1"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "book successfully Deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authorization token is required or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Book not registered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+     },
+    "/cart/addItem/{id}": {
+      "post": {
+        "summary": "Create a cart",
+        "tags": ["Carts"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+      "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the Book",
+            "schema": {
+              "type": "string",
+              "example": "1"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Cart Successfully Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CartResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authorization token is required or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Book not registered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+     },
+    "/cart/getCartById": {
+      "get": {
+        "summary": "Get cart By Id",
+        "tags": ["Carts"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Cart Successfully Get",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CartResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authorization token is required or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Book not registered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+     },
+      "/wishList/addItem/{id}": {
+      "post": {
+        "summary": "Create a whishList",
+        "tags": ["WhishLists"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+      "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the Book",
+            "schema": {
+              "type": "string",
+              "example": "1"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "WishList Successfully Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WishListReponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authorization token is required or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Book not registered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+     },
+     "/wishList/getWishList": {
+      "get": {
+        "summary": "Get whishList By Id",
+        "tags": ["WhishLists"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "WhishList Successfully Get",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WishListReponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authorization token is required or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Book not registered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+     }
     },
     "components": {
       "securitySchemes": {
@@ -609,19 +960,19 @@
   "required": ["bookName", "author", "imgUrl", "quantity", "price", "description", "discountPrice"]
         },
         "BookResponse": {
-  "type": "object",
-  "properties": {
-    "code": {
-      "type": "integer",
-      "example": 202
-    },
-    "data": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "example": 101
-        },
+        "type": "object",
+       "properties": {
+        "code": {
+       "type": "integer",
+       "example": 202
+          },
+         "data": {
+        "type": "object",
+         "properties": {
+          "id": {
+           "type": "integer",
+           "example": 101
+         },
         "bookName": {
           "type": "string",
           "example": "To Kill a Mockingbird"
@@ -661,6 +1012,235 @@
       "example": "Book successfully created"
     }
   }
+         },
+        "CartResponse": {
+    "type": "object",
+    "properties": {
+      "code": {
+        "type": "integer",
+        "example": 202
+      },
+      "data": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 12
+          },
+          "userId": {
+            "type": "integer",
+            "example": 1
+          },
+          "totalPrice": {
+            "type": "integer",
+            "example": 5000
+          },
+          "totalDiscountPrice": {
+            "type": "integer",
+            "example": 100
+          },
+          "totalQuantity": {
+            "type": "integer",
+            "example": 1
+          },
+          "books": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "example": 3
+                },
+                "bookName": {
+                  "type": "string",
+                  "example": "The City and Its Uncertain Walls"
+                },
+                "author": {
+                  "type": "string",
+                  "example": "Haruki Murakami 2"
+                },
+                "quantity": {
+                  "type": "integer",
+                  "example": 1
+                },
+                "adminId": {
+                  "type": "integer",
+                  "example": 1
+                },
+                "description": {
+                  "type": "string",
+                  "example": "When a young man’s girlfriend mysteriously vanishes, he sets his heart on finding the imaginary city where her true self lives. His search will lead him to take a job in a remote library with mysteries of its own."
+                },
+                "discountPrice": {
+                  "type": "integer",
+                  "example": 100
+                },
+                "imgUrl": {
+                  "type": "string",
+                  "example": "https://m.media-amazon.com/images/I/81GO0xfwFiL._SY466_.jpg"
+                },
+                "price": {
+                  "type": "integer",
+                  "example": 5000
+                }
+              }
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-11-18T11:58:50.137Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-11-18T11:59:16.357Z"
+          }
+        }
+      },
+      "message": {
+        "type": "string",
+        "example": "Cart successfully updated"
+      }
+    }
+          },
+        "WishListReponse": {
+    "type": "object",
+    "properties": {
+      "code": {
+        "type": "integer",
+        "example": 202
+      },
+      "data": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 12
+          },
+          "userId": {
+            "type": "integer",
+            "example": 1
+          },
+          "books": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "example": 3
+                },
+                "bookName": {
+                  "type": "string",
+                  "example": "The City and Its Uncertain Walls"
+                },
+                "author": {
+                  "type": "string",
+                  "example": "Haruki Murakami 2"
+                },
+                "quantity": {
+                  "type": "integer",
+                  "example": 1
+                },
+                "adminId": {
+                  "type": "integer",
+                  "example": 1
+                },
+                "description": {
+                  "type": "string",
+                  "example": "When a young man’s girlfriend mysteriously vanishes, he sets his heart on finding the imaginary city where her true self lives. His search will lead him to take a job in a remote library with mysteries of its own."
+                },
+                "discountPrice": {
+                  "type": "integer",
+                  "example": 100
+                },
+                "imgUrl": {
+                  "type": "string",
+                  "example": "https://m.media-amazon.com/images/I/81GO0xfwFiL._SY466_.jpg"
+                },
+                "price": {
+                  "type": "integer",
+                  "example": 5000
+                }
+              }
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-11-18T11:58:50.137Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-11-18T11:59:16.357Z"
+          }
+        }
+      },
+      "message": {
+        "type": "string",
+        "example": "WishList Successfully Get"
+      }
+    }
+          },
+         "AllBookResponse": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "integer",
+              "example": 202
+            },
+            "data": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 101
+                  },
+                  "bookName": {
+                    "type": "string",
+                    "example": "To Kill a Mockingbird"
+                  },
+                  "author": {
+                    "type": "string",
+                    "example": "Harper Lee"
+                  },
+                  "imgUrl": {
+                    "type": "string",
+                    "example": "http://example.com/image.jpg"
+                  },
+                  "quantity": {
+                    "type": "integer",
+                    "example": 10
+                  },
+                  "price": {
+                    "type": "integer",
+                    "example": 1500
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "A classic novel of racism and injustice."
+                  },
+                  "discountPrice": {
+                    "type": "integer",
+                    "example": 1200
+                  },
+                  "adminId": {
+                    "type": "integer",
+                    "example": 1
+                  }
+                }
+              }
+            },
+            "message": {
+              "type": "string",
+              "example": "Books fetched successfully"
+            }
+          }
          },
         "UserUpdateRequest": {
           "type": "object",

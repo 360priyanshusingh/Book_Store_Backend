@@ -32,11 +32,11 @@ app.use(_express["default"].json());
 app.use((0, _morgan["default"])('combined', {
   stream: _logger.logStream
 }));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/api/".concat(api_version), (0, _routes["default"])());
 app.use(_error.appErrorHandler);
 app.use(_error.genericErrorHandler);
 app.use(_error.notFound);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.listen(port, function () {
   _logger["default"].info("Server started at ".concat(host, ":").concat(port, "/api/").concat(api_version, "/"));
 });
