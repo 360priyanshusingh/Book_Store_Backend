@@ -46,7 +46,7 @@ export const newUser = async (body) => {
     }
 
     return{
-      code:HttpStatus.ACCEPTED,
+      code:HttpStatus.CREATED,
       data:user,
       message:'User Succesfully created'
     }

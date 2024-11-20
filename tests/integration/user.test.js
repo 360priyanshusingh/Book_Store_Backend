@@ -1,19 +1,51 @@
 import { expect } from 'chai';
 import request from 'supertest';
-
 import app from '../../src/index';
 
-describe('User APIs Test', () => {
-  describe('GET /users', () => {
-    it('should return empty array', (done) => {
-      request(app)
-        .get('/api/v1/users')
-        .end((err, res) => {
-          expect(res.statusCode).to.be.equal(200);
-          expect(res.body.data).to.be.an('array');
 
-          done();
-        });
-    });
-  });
+
+describe('check user login and singup', () => {
+
+  // it('should sign up a new user', (done) => {
+  //   request(app)
+  //     .post('/api/v1/users/signup')
+  //     .send({
+  //       firstName: 'Test',
+  //       lastName: 'User',
+  //       email: "example@email.com",
+  //       password: 'Priyanshu@123'
+  //     })
+  //     .expect(201)
+  //     .end((err, res) => {
+  //       if (err) return done(err);
+  //       console.log(res.body)
+  //       expect(res.body).to.have.property('data');
+  //       expect(res.body.data).to.have.property('email').eql("example@email.com");
+  //       done();
+  //     });
+  // });
+   
+
+     it("Check user login or not ",(done)=>{
+
+        request(app)
+        .post('/api/v1/users/login')
+        .send({
+         email: "example@email.com",
+         password: 'Priyanshu@123'
+        })
+        .expect(201)
+        .end((error,res)=>{
+          if(error)  return done(error)
+           expect(res.body).to.have.property('data') 
+           expect(res.body).to.have.property('message').eql('User successfully Login')
+           done()
+        })
+
+     })
+
+
+ 
+
 });
+
