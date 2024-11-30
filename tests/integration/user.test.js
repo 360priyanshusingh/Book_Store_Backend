@@ -6,7 +6,7 @@ import app from '../../src/index';
 
 describe('check user login and singup', () => {
 
-  it('should sign up a new user', (done) => {
+     it('should sign up a new user', (done) => {
     request(app)
       .post('/api/v1/users/signup')
       .send({
@@ -23,9 +23,8 @@ describe('check user login and singup', () => {
         expect(res.body.data).to.have.property('email').eql("example@email.com");
         done();
       });
-  });
-   
-
+      });
+      
      it("Check user login or not ",(done)=>{
 
         request(app)

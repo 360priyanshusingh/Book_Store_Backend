@@ -25,12 +25,12 @@ var HOST = process.env.HOST;
 var PORT = process.env.PORT;
 var DIALECT = process.env.DIALECT;
 if (process.env.NODE_ENV === 'test') {
-  DATABASE = process.env.DATABASE_TEST;
-  USERNAME = process.env.USERNAME_TEST;
-  PASSWORD = process.env.PASSWORD_TEST;
-  HOST = process.env.HOST_TEST;
-  PORT = process.env.PORT_TEST;
-  DIALECT = process.env.DIALECT_TEST;
+  DATABASE = process.env.DATABASE;
+  USERNAME_DB = process.env.USERNAME_DB;
+  PASSWORD_DB = process.env.PASSWORD_DB;
+  HOST = process.env.HOST;
+  PORT = process.env.PORT;
+  DIALECT = process.env.DIALECT;
 }
 var sequelize = new _sequelize["default"](DATABASE, USERNAME_DB, PASSWORD_DB, {
   host: HOST,

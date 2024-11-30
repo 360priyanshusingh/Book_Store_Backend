@@ -80,7 +80,7 @@ var newUser = exports.newUser = /*#__PURE__*/function () {
           });
         case 24:
           return _context.abrupt("return", {
-            code: _httpStatusCodes["default"].ACCEPTED,
+            code: _httpStatusCodes["default"].CREATED,
             data: user,
             message: 'User Succesfully created'
           });

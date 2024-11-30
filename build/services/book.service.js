@@ -72,12 +72,12 @@ var updateBook = exports.updateBook = /*#__PURE__*/function () {
             message: 'Book Not Exit !'
           });
         case 5:
-          book.description = body.description;
-          book.price = body.price;
-          book.quantity = body.quantity;
-          book.author = body.author;
-          book.imgUrl = body.imgUrl;
-          book.discountPrice = body.discountPrice;
+          book.description = body.description ? body.description : book.description;
+          book.price = body.price ? body.price : book.price;
+          book.quantity = body.quantity ? body.quantity : book.quantity;
+          book.author = body.author ? body.author : book.author;
+          book.imgUrl = body.imgUrl ? body.imgUrl : book.imgUrl;
+          book.discountPrice = body.discountPrice ? body.discountPrice : book.discountPrice;
           book.bookName = body.bookName ? body.bookName : book.bookName;
           book.save();
           return _context2.abrupt("return", {
